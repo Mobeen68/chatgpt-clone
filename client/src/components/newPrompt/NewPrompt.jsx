@@ -38,10 +38,15 @@ const NewPrompt = () => {
   const add = async (params) => {
     setPrompt(params);
 
-    const result = await chat.sendMessage(
+    const result = await chat.sendMessageStream(
       Object.entries(image.aiData).length > 0 ? [image.aiData, params] : params
     );
-    setAnswer(result.response.text());
+    let accumulatedText = "";
+    for await (const chunk of result.stream) {
+      const chunkText = chunk.text();
+      accumulatedText += chunkText;
+      setAnswer(accumulatedText);
+    }
     setImage({
       isLoading: false,
       error: "",
