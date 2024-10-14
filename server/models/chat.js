@@ -10,7 +10,7 @@ const chatSchema = new mongoose.Schema(
       {
         role: {
           type: String,
-          enums: ["user" | "model"],
+          enums: ["user", "model"],
           required: true,
         },
         parts: [
